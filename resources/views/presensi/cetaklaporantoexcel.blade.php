@@ -64,23 +64,6 @@
 <!-- Set also "landscape" if you need -->
 
 <body class="A4">
-    @php
-				// Function Untuk Menghitung Selisih Jam
-				function selisih($jam_masuk, $jam_keluar)
-				{
-				    [$h, $m, $s] = explode(":", $jam_masuk);
-				    $dtAwal = mktime($h, $m, $s, "1", "1", "1");
-				    [$h, $m, $s] = explode(":", $jam_keluar);
-				    $dtAkhir = mktime($h, $m, $s, "1", "1", "1");
-				    $dtSelisih = $dtAkhir - $dtAwal;
-				    $totalmenit = $dtSelisih / 60;
-				    $jam = explode(".", $totalmenit / 60);
-				    $sisamenit = $totalmenit / 60 - $jam[0];
-				    $sisamenit2 = $sisamenit * 60;
-				    $jml_jam = $jam[0];
-				    return $jml_jam . ":" . round($sisamenit2);
-				}
-@endphp
 
     <!-- Each sheet element should have the class "sheet" -->
     <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
@@ -144,40 +127,27 @@
                     <th>No</th>
                     <th>Tanggal</th>
                     <th>Jam Masuk</th>
-                    <th>Foto Masuk</th>
+
                     <th>Jam Pulang</th>
-                    <th>Foto Pulang</th>
+
                     <th>Keterangan</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($presensi as $d)
-                    @php
-                        $path_in = Storage::url('uploads/absensi/' . $d->foto_in);
-                        $path_out = Storage::url('uploads/absensi/' . $d->foto_out);
-                        $jamterlambat = selisih($d->jam_masuk, $d->jam_in);
-                    @endphp
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ date('d-m-Y', strtotime($d->tgl_absen)) }}</td>
                         <td>{{ $d->jam_in }}</td>
-                        <td><img src="{{ url($path_in) }}" class="avatar"></td>
+
                         <td>{{ $d->jam_out != null ? $d->jam_out : 'Tidak Absen' }}</td>
+
                         <td>
-                            @if (empty($d->foto_out))
-                                <img src="{{ asset('assets/img/no_photo.png') }}" class="avatar" alt="">
-                            @else
-                                <img src="{{ url($path_out) }}" class="avatar" alt="">
-                            @endif
-                        </td>
-                        <td>
-                            @if ($d->jam_in > $d->jam_masuk)
+                            @if ($d->jam_in > '07:00')
                                 <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
                                     data-bs-title="Disabled tooltip">
-                                    Terlambat {{ $jamterlambat }} Menit
+                                    Terlambat
                                 </span>
-                            @else
-                            Tepat Waktu
                             @endif
                         </td>
                     </tr>

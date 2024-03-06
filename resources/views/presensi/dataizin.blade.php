@@ -98,7 +98,7 @@
 
                                         </div>
 
-                                        <div class="col-1 ">
+                                        <div class="col-2 ">
 
                                             <button class="btn " type="submit">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -113,9 +113,9 @@
                                             </button>
 
                                         </div>
-                                        <div class="col-1 ml-2">
+                                        <div class="col-1 " style="margin-left: 40px; margin-top: 10px">
 
-                                            <a href="/presensi/dataizin" class="btn btn-primary">
+                                            <a href="/presensi/dataizin" class="btn btn-primary btn-sm">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     class="icon icon-tabler icon-tabler-refresh" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -137,7 +137,17 @@
                             </div>
                         </div>
                         <div class="col-12">
+                            <style>
+                                .table th {
+                                    text-align: center;
+                                    vertical-align: middle;
+                                }
 
+                                .table td {
+                                    vertical-align: middle;
+                                    text-align: center;
+                                }
+                            </style>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>

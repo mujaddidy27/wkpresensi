@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row mt-2 ">
+                            <div class="row mt-2">
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-12">
@@ -65,16 +65,17 @@
                             <div class="row mt-2">
                                 <div class="col-12">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered">
+                                        <table class="table-bordered table">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
                                                     <th>NIK</th>
                                                     <th>Nama Karyawan</th>
                                                     <th>Departemen</th>
-                                                    <th>Jam Masuk</th>
+                                                    <th>Jadwal Shift</th>
+                                                    <th>Absen Masuk</th>
                                                     <th>Foto Masuk</th>
-                                                    <th>Jam Pulang</th>
+                                                    <th>Absen Pulang</th>
                                                     <th>Foto Pulang</th>
                                                     <th>Keterangan</th>
                                                     <th>Lokasi</th>

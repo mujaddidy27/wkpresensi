@@ -20,7 +20,7 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards align-items-center">
-                <div class="col-md-2 col-xl-2">
+                <div class="col-md-2 col-xl-3">
                     <div class="card card-sm">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xl-2">
+                <div class="col-md-6 col-xl-3">
                     <div class="card card-sm">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xl-2">
+                <div class="col-md-6 col-xl-3">
                     <div class="card card-sm">
                         <div class="card-body">
                             <div class="row align-items-center">
@@ -116,7 +116,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xl-2">
+                <div class="col-md-6 col-xl-3">
                     <div class="card card-sm">
                         <div class="card-body">
                             <div class="row align-items-center">

@@ -8,11 +8,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
-    <title>Presensi Geolocation</title>
+    <title>{{ $title }}</title>
     <meta name="description" content="Mobilekit HTML Mobile UI Kit">
     <meta name="keywords" content="bootstrap 4, mobile template, cordova, phonegap, mobile, html" />
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
+    <link rel="icon" type="image/png" href="assets/img/logowk.png" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logowk.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="__manifest.json">
 </head>
@@ -29,13 +29,13 @@
     <!-- App Capsule -->
     <div id="appCapsule" class="pt-0">
 
-        <div class="login-form mt-1">
-            <div class="section">
-                <img src="assets/img/login/logologin.jpg" alt="image" class="form-image">
+        <div class="login-form mt-4">
+            <div class="section " >
+                <img src="{{ asset('assets/img/logowk.png') }}" width="50px" alt="image" class="form-image">
             </div>
             <div class="section mt-1">
-                <h1>E-Presensi</h1>
-                <h4>Silahkan Login</h4>
+                <h1>E-Presensi WK</h1>
+                <h2>Silahkan Login</h2>
             </div>
             <div class="section mt-1 mb-5">
                 @php
@@ -64,13 +64,6 @@
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
                         </div>
-                    </div>
-
-                    <div class="form-links mt-2">
-                        <div>
-                            <a href="page-register.html">Register Now</a>
-                        </div>
-                        <div><a href="page-forgot-password.html" class="text-muted">Forgot Password?</a></div>
                     </div>
 
                     <div class="form-button-group">

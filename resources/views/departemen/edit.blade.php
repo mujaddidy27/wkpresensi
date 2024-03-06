@@ -36,7 +36,8 @@
                     </svg>
                 </span>
                 <input type="text" value="{{ $departemen->nama }}" name="nama_dpt" class="form-control"
-                    placeholder="Nama Dept">
+                    placeholder="Nama Dept" required oninvalid="this.setCustomValidity('Nama Departemen Harus disi !')"
+                    onchange="this.setCustomValidity('')">
             </div>
         </div>
         <div class="modal-footer">

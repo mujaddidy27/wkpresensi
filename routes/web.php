@@ -1,12 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PresensiController;
-use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\CabangController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartemenController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KonfigurasiController;
+use App\Http\Controllers\PresensiController;
+use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,16 +19,21 @@ use App\Http\Controllers\KonfigurasiController;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
-
+ */
 
 Route::middleware(['guest:karyawan'])->group(function () {
-    Route::get('/', function () {return view('auth.login');})->name('login');
+    Route::get('/', function () {
+        $title = 'login';
+        return view('auth.login', compact('title'));
+    })->name('login');
     Route::post('/proseslogin', [AuthController::class, 'proseslogin']);
 });
 
 Route::middleware(['guest:user'])->group(function () {
-    Route::get('/panel', function () {return view('auth.loginadmin');})->name('loginadmin');
+    Route::get('/panel', function () {
+        $title = 'login';
+        return view('auth.loginadmin', compact('title'));
+    })->name('loginadmin');
     Route::post('/prosesloginadmin', [AuthController::class, 'prosesloginadmin']);
 });
 
@@ -36,9 +44,11 @@ Route::middleware(['auth:karyawan'])->group(function () {
     // presensi
     Route::get('/presensi/create', [PresensiController::class, 'create']);
     Route::post('/presensi/store', [PresensiController::class, 'store']);
+    Route::post('/presensi/pilihshift', [PresensiController::class, 'pilihshift']);
     //profile
+    Route::get('/profile', [PresensiController::class, 'profile']);
     Route::get('/editprofile', [PresensiController::class, 'editprofile']);
-    Route::post('/presensi/{nik}/updateprofile', [PresensiController::class, 'updateprofile']);
+    Route::post('/presensi/{nik}/updateprofile', [PresensiController::class, 'uprofile']);
     //history
     Route::get('/presensi/history', [PresensiController::class, 'history']);
     Route::post('/gethistory', [PresensiController::class, 'gethistory']);
@@ -76,11 +86,49 @@ Route::middleware(['auth:user'])->group(function () {
     Route::get('/presensi/dataizin', [PresensiController::class, 'dataizin']);
     Route::post('/presensi/konfirmasiizin', [PresensiController::class, 'konfirmasiizin']);
     Route::get('/presensi/{id}/batalapprove', [PresensiController::class, 'batalapprove']);
-    //konfigurasi kantor
-    Route::get('/konfigurasi/lokasikantor', [KonfigurasiController::class, 'lokasikantor']);
-    Route::post('/konfigurasi/updatelokasikantor', [KonfigurasiController::class, 'updatelokasikantor']);
 
+    //Cabang
+    Route::get('/kantorcabang', [CabangController::class, 'index']);
+    Route::post('/cabang/store', [CabangController::class, 'store']);
+    Route::post('/cabang/{kode_cab}/delete', [CabangController::class, 'delete']);
+    Route::post('/cabang/edit', [CabangController::class, 'edit']);
+    Route::post('/cabang/{kode_cab}/update', [CabangController::class, 'update']);
 
+    //konfigurasi
+    Route::get('/konfigurasi/jamkerja', [KonfigurasiController::class, 'jamkerja']);
+    Route::post('/konfigurasi/store', [KonfigurasiController::class, 'store']);
+    Route::post('/konfigurasi/{kode_shift}/delete', [KonfigurasiController::class, 'delete']);
+    Route::post('/konfigurasi/editjam', [KonfigurasiController::class, 'editjam']);
+    Route::post('/konfigurasi/{kode_shift}/update', [KonfigurasiController::class, 'update']);
+    Route::get('/konfigurasi/{nik}/setjamkerja', [KonfigurasiController::class, 'setjamkerja']);
+
+    //Pengguna
+    Route::get('/users/pengguna', [KaryawanController::class, 'pengguna']);
+    Route::post('/users/store', [KaryawanController::class, 'tambahpengguna']);
+    Route::post('/users/{nik}/delete', [KaryawanController::class, 'deleteuser']);
 
 });
 
+Route::get('/createrolepermission', function () {
+
+    try {
+        $role = Role::create(['name' => 'writer']);
+        $permission = Permission::create(['name' => 'edit articles']);
+        echo "sukses";
+    } catch (\Exception $th) {
+        echo "error";
+    }
+
+});
+
+Route::get('/give-user-role', function () {
+
+    try {
+        $user = User::findorfail(1);
+        $user->assignRole('administrator');
+        echo "sukses";
+    } catch (\Throwable $th) {
+        echo "error";
+    }
+
+});

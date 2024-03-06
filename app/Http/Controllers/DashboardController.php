@@ -13,6 +13,8 @@ class DashboardController extends Controller
         $bulanini = date('m')*1;
         $tahunini = date('Y');
         $nik = Auth::guard('karyawan')->user()->nik;
+        $kode_shift = Auth::guard('karyawan')->user()->kode_shift;
+        $shift_karyawan = DB::table('jams')->where('kode_shift', $kode_shift)->first();
         $absenhariini = DB::table('presensis')
         ->where('nik', $nik)
         ->where('tgl_absen', $hariini)
@@ -24,7 +26,8 @@ class DashboardController extends Controller
         ->orderBy('tgl_absen')
         ->get();
         $rekapabsen = DB::table('presensis')
-        ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(jam_in > "07:00",1,0)) as jmlterlambat')
+        ->selectRaw('COUNT(nik) as jmlhadir, SUM(IF(jam_in > jam_masuk,1,0)) as jmlterlambat')
+        ->leftJoin('jams', 'presensis.kode_shift','=','jams.kode_shift')
         ->where('nik', $nik)
         ->whereRaw('MONTH(tgl_absen)="'.$bulanini.'"')
         ->whereRaw('YEAR(tgl_absen)="'.$tahunini.'"')
@@ -43,7 +46,9 @@ class DashboardController extends Controller
         ->whereRaw('YEAR(tgl_izin)="'.$tahunini.'"')
         ->where('status', 1)
         ->first();
-        return view('dashboard.dashboard', compact('absenhariini','historybulanini','namabulan','bulanini','tahunini','rekapabsen','liderboard','rekapizin'));
+
+        $title = "Dashboard";
+        return view('dashboard.dashboard', compact('title','absenhariini','historybulanini','namabulan','bulanini','tahunini','rekapabsen','liderboard','rekapizin'));
     }
 
     public function dashboardadmin(){
@@ -61,7 +66,7 @@ class DashboardController extends Controller
         ->where('tgl_izin', $hariini)
         ->where('status', 1)
         ->first();
-
-        return view('dashboard.dashboardadmin', compact('rekapkaryawan','rekapabsen','rekapizin'));
+        $title = "Dashboard";
+        return view('dashboard.dashboardadmin', compact('title','rekapkaryawan','rekapabsen','rekapizin'));
     }
 }

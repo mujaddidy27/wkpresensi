@@ -36,7 +36,8 @@
                     </svg>
                 </span>
                 <input type="text" value="{{ $karyawan->nama_lengkap }}" name="nama_lengkap" class="form-control"
-                    placeholder="Nama">
+                    placeholder="Nama" required oninvalid="this.setCustomValidity('Nama Harus Diisi !')"
+                    onchange="this.setCustomValidity('')">
             </div>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
@@ -60,7 +61,8 @@
                     </svg>
                 </span>
                 <input type="text" value="{{ $karyawan->jabatan }}" name="jabatan" class="form-control"
-                    placeholder="Jabatan">
+                    placeholder="Jabatan" required oninvalid="this.setCustomValidity('Jabatan Harus Diisi !')"
+                    onchange="this.setCustomValidity('')">
             </div>
             <div class="input-icon mb-3">
                 <span class="input-icon-addon">
@@ -76,18 +78,34 @@
                     </svg>
                 </span>
                 <input type="text" value="{{ $karyawan->no_hp }}" name="no_hp" class="form-control"
-                    placeholder="No Hp">
+                    placeholder="No Hp" required oninvalid="this.setCustomValidity('No Hp Harus Diisi !')"
+                    onchange="this.setCustomValidity('')">
             </div>
             <div class="mb-3">
                 <div class="form-label">Upload Foto</div>
                 <input type="file" name="foto" class="form-control" />
             </div>
             <div class="mb-3">
-                <select class="form-select" name="kode_dpt" id="kode_dpt">
-                    <option>Pilih Departement</option>
+                <select class="form-select" name="kode_dpt" id="kode_dpt" required
+                                        oninvalid="this.setCustomValidity('Departemen Harus Diisi !')"
+                                        onchange="this.setCustomValidity('')">
+                    <option>Pilih Departemen</option>
                     @foreach ($departemen as $d)
                         <option {{ $karyawan->kode_dpt == $d->kode ? 'selected' : '' }} value="{{ $d->kode }}">
                             {{ $d->nama }}</option>
+                    @endforeach
+
+                </select>
+            </div>
+            <div class="mb-3">
+                <select class="form-select" name="kode_cab" id="kode_cab" required
+                                        oninvalid="this.setCustomValidity('Cabang Harus Diisi !')"
+                                        onchange="this.setCustomValidity('')">
+                    <option>Pilih Kantor Cabang</option>
+                    @foreach ($cabang as $d)
+                        <option {{ $karyawan->kode_cab == $d->kode_cab ? 'selected' : '' }}
+                            value="{{ $d->kode_cab }}">
+                            {{ $d->nama_cab }}</option>
                     @endforeach
 
                 </select>
@@ -116,7 +134,7 @@
                     </svg>
                 </span>
                 <input type="password" name="password" value="{{ $karyawan->password }}" class="form-control"
-                    placeholder="Password">
+                    placeholder="Password" >
             </div>
         </div>
         <div class="modal-footer">

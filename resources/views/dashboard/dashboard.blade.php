@@ -1,21 +1,40 @@
 @extends('layout.presensi')
 
 @section('content')
+    <style>
+        .logout {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            text-decoration: none;
+            right: 8px;
+        }
+    </style>
     <div id="appCapsule">
         <div class="section" id="user-section">
             <div id="user-detail">
+                <a href="/proseslogout" class="logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="24"
+                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                        <path d="M9 12h12l-3 -3" />
+                        <path d="M18 15l3 -3" />
+                    </svg>
+                </a>
                 <div class="avatar">
                     @if (!empty(Auth::guard('karyawan')->user()->foto))
                         @php
                             $path = Storage::url('uploads/karyawan/' . Auth::guard('karyawan')->user()->foto);
                         @endphp
-                        <img src="{{ url($path) }}" alt="avatar" class="imaged w64 rounded" style="height: 65px">
+                        <img src="{{ url($path) }}" alt="avatar" class="imaged w64 " style="height: 65px">
                     @else
                         <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
                     @endif
                 </div>
                 <div id="user-info">
-                    <h2 id="user-name">{{ Auth::guard('karyawan')->user()->nama }}</h2>
+                    <h2 id="user-name">{{ Auth::guard('karyawan')->user()->nama_lengkap }}</h2>
                     <span id="user-role">{{ Auth::guard('karyawan')->user()->jabatan }}</span>
                 </div>
             </div>

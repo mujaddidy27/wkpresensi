@@ -1,14 +1,15 @@
 @extends('layout.admin.tabler')
 @section('contents')
-    <!-- Page header -->
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <!-- Page pre-title -->
-
+                    {{-- <div class="page-pretitle">
+                    Karyawan
+                </div> --}}
                     <h2 class="page-title">
-                        Data Departemen
+                        Konfigurasi Jam Kerja
                     </h2>
                 </div>
 
@@ -41,7 +42,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <a href="#" class="btn" id="btnTambahDepartemen">
+                                    <a href="#" class="btn" id="btnTambahShift">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus"
                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                             stroke="currentColor" fill="none" stroke-linecap="round"
@@ -56,18 +57,14 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-12">
-                                    <form action="/departemen" method="get">
+                                    <form action="/konfigurasi" method="get">
                                         <div class="row">
                                             <div class="col-2">
-                                                <div class="form-group">
-                                                    <div class="input-icon">
-
-                                                        <input type="text" value="{{ Request('nama_dpt') }}"
-                                                            name="nama_dpt" id="nama_dpt" class="form-control"
-                                                            placeholder="Nama..." aria-label="Search in website">
-                                                    </div>
-                                                </div>
+                                                <select class="form-select" name="kode_cabang" id="">
+                                                    <option value="">Semua Jam Shift</option>
+                                                </select>
                                             </div>
+
                                             <div class="col-2">
                                                 <button type="submit" class="btn btn-primary">
                                                     <!-- Download SVG icon from http://tabler-icons.io/i/search -->
@@ -83,7 +80,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-2" style="margin-left: 40px">
-                                                <a href="/departemen" class="btn">
+                                                <a href="/konfigurasi/jamkerja" class="btn">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         class="icon icon-tabler icon-tabler-refresh" width="24"
                                                         height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -96,6 +93,7 @@
                                                     </svg>
                                                     Refresh</a>
                                             </div>
+
                                         </div>
                                     </form>
                                 </div>
@@ -118,23 +116,32 @@
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Kode Dept</th>
-                                                    <th>Nama Dept</th>
+                                                    <th>Kode Shift</th>
+                                                    <th>Nama Shift</th>
+                                                    <th>Awal Jam Masuk</th>
+                                                    <th>Jam Masuk</th>
+                                                    <th>Akhir Jam Masuk</th>
+                                                    <th>Jam Pulang</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($departemen as $d)
+                                                @foreach ($jam_kerja as $d)
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $d->kode }}</td>
-                                                        <td>{{ $d->nama }}</td>
+                                                        <td>{{ $d->kode_shift }}</td>
+                                                        <td>{{ $d->nama_shift }}</td>
+                                                        <td>{{ $d->awal_jam_masuk }}</td>
+                                                        <td>{{ $d->jam_masuk }}</td>
+                                                        <td>{{ $d->akhir_jam_masuk }}</td>
+                                                        <td>{{ $d->jam_pulang }}</td>
+
                                                         <td>
                                                             <div class="">
-                                                                <div class="">
+                                                                <div class=" ">
                                                                     <button href="#" class="edit btn btn-info btn-sm"
-                                                                        kode_dpt = "{{ $d->kode }}"><svg
-                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                        kode_shift = "{{ $d->kode_shift }}">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
                                                                             class="icon icon-tabler icon-tabler-edit"
                                                                             width="24" height="24"
                                                                             viewBox="0 0 24 24" stroke-width="2"
@@ -155,7 +162,7 @@
                                                                 </div>
 
                                                                 <div class="">
-                                                                    <form action="/departemen/{{ $d->kode }}/delete"
+                                                                    <form action="/konfigurasi/{{ $d->kode_shift }}/delete"
                                                                         method="POST">
                                                                         @csrf
 
@@ -181,8 +188,6 @@
                                                                     </form>
                                                                 </div>
                                                             </div>
-
-
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -200,11 +205,11 @@
         </div>
     </div>
     {{-- model-edit --}}
-    <div class="modal modal-blur fade" id="modal-editdepartemen" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-editshift" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data Departemen</h5>
+                    <h5 class="modal-title">Edit Data Shift</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="loadeditform">
@@ -215,16 +220,16 @@
         </div>
     </div>
     {{-- model-input --}}
-    <div class="modal modal-blur fade" id="modal-inputdepartemen" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-inputshift" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Input Data Departemen</h5>
+                    <h5 class="modal-title">Input Data Shift</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
-                    <form action="/departemen/store" method="post" id="formDepartemen" enctype="multipart/form-data">
+                    <form action="/konfigurasi/store" method="post" id="formJamShift" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-12">
@@ -244,8 +249,8 @@
                                             <path d="M11 15l2 0"></path>
                                         </svg>
                                     </span>
-                                    <input type="text" value="{{ $project }}" name="kode_dpt" id="kode_dpt"
-                                        class="form-control" placeholder="Kode Departemen" readonly>
+                                    <input type="text" value="{{ $project }}" name="kode_shift" id="kode_shift"
+                                        class="form-control" placeholder="Kode Shift" readonly>
                                 </div>
                                 <div class="input-icon mb-3">
                                     <span class="input-icon-addon">
@@ -266,11 +271,46 @@
                                             <path d="M14 12h4"></path>
                                         </svg>
                                     </span>
-                                    <input type="text" value="" name="nama_dpt" class="form-control"
-                                        placeholder="Nama Departemen" required
-                                        oninvalid="this.setCustomValidity('Nama Departemen Harus disi !')"
+                                    <input type="text" value="" name="nama_shift" class="form-control"
+                                        placeholder="Nama Shift" required
+                                        oninvalid="this.setCustomValidity('Nama Shift Harus disi !')"
+                                        onchange="this.setCustomValidity('')">
+
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">
+                                        Awal Jam Masuk
+                                    </span>
+                                    <input type="time" value="" name="awal_jam_masuk" class="form-control"
+                                        required oninvalid="this.setCustomValidity('Awal Jam Masuk Harus disi !')"
                                         onchange="this.setCustomValidity('')">
                                 </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">
+                                        Jam Masuk
+                                    </span>
+                                    <input type="time" value="" name="jam_masuk" class="form-control" required
+                                        oninvalid="this.setCustomValidity('Jam Masuk Harus disi !')"
+                                        onchange="this.setCustomValidity('')">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">
+                                        Akhir Jam Masuk
+                                    </span>
+                                    <input type="time" value="" name="akhir_jam_masuk" class="form-control"
+                                        required oninvalid="this.setCustomValidity('Akhir Jam Masuk Harus disi !')"
+                                        onchange="this.setCustomValidity('')">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">
+                                        Jam Pulang
+                                    </span>
+                                    <input type="time" value="" name="jam_pulang" class="form-control"
+                                        placeholder="Jam Pulang" required
+                                        oninvalid="this.setCustomValidity('Jam Pulang Harus disi !')"
+                                        onchange="this.setCustomValidity('')">
+                                </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn me-auto" data-bs-dismiss="modal">Batal</button>
@@ -288,26 +328,28 @@
 @push('myscript')
     <script>
         $(function() {
-            $("#btnTambahDepartemen").click(function() {
-                $("#modal-inputdepartemen").modal("show");
+            $("#btnTambahShift").click(function() {
+                $("#modal-inputshift").modal("show");
             });
 
             $(".edit").click(function() {
-                var kode_dpt = $(this).attr('kode_dpt');
+                var kode_shift = $(this).attr('kode_shift');
+
                 $.ajax({
                     type: 'POST',
-                    url: '/departemen/edit',
+                    url: '/konfigurasi/editjam',
                     cache: false,
                     data: {
                         _token: "{{ csrf_token() }}",
-                        kode_dpt: kode_dpt
+                        kode_shift: kode_shift
 
                     },
                     success: function(respond) {
                         $("#loadeditform").html(respond);
                     }
-                })
-                $("#modal-editdepartemen").modal("show");
+                });
+
+                $("#modal-editshift").modal("show");
             });
 
             $(".delete-confirm").click(function(e) {
@@ -333,25 +375,43 @@
                 });
             });
 
-            $("#formKaryawan").submit(function() {
-                var nik = $('nik').val();
-                var nama_lengkap = $('nama_karyawan').val();
-                var jabatan = $('jabatan').val();
-                var no_hp = $('no_hp').val();
-                var kode_dpt = $('nik').val();
+            $("#formCabang").submit(function() {
+                var kode = $('#kode_cabang').val();
+                var nama = $('#nama_cabang').val();
+                var lokasi = $('#lokasi_cabang').val();
+                var radius = $('#radius_cabang').val();
 
-                if (nik == "") {
-                    alert('Nik Harus Diisi !');
-                    $("nik").focus();
-                    // Swal.fire({
-                    //     title: 'Warning !',
-                    //     text: 'Nik Harus Diisi !',
-                    //     icon: 'warning !',
-                    //     confirmButtonText: 'Ok'
-                    // });
+                if (nama == "") {
+                    // alert('Kode Cabang Harus Diisi !');
+                    Swal.fire({
+                        title: 'Warning !',
+                        text: 'Kode Cabang Harus Diisi !',
+                        icon: 'warning !',
+                        confirmButtonText: 'Ok'
+                    });
                     return false;
                 }
             })
         });
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
     </script>
 @endpush

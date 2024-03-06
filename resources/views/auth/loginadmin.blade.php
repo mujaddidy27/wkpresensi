@@ -13,8 +13,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sign in with illustration - Tabler - Premium and Open Source dashboard template with responsive and high
-        quality UI.</title>
+    <title>E-Presensi WK || {{ $title }}</title>
+    <link rel="icon" type="image/png" href="assets/img/logowk.png" sizes="32x32">
     <!-- CSS files -->
     <link href="{{ asset('tabler/dist/css/tabler.min.css?1692870487') }}" rel="stylesheet" />
     <link href="{{ asset('tabler/dist/css/tabler-flags.min.css?1692870487') }}" rel="stylesheet" />
@@ -43,7 +43,7 @@
                     <div class="container-tight">
                         <div class="text-center mb-4">
                             <a href="." class="navbar-brand navbar-brand-autodark"><img
-                                    src="{{ asset('tabler/static/logo.svg') }}" height="36" alt=""></a>
+                                    src="{{ asset('tabler/static/wklogo.svg') }}" height="70" alt=""></a>
                         </div>
                         <div class="card card-md">
                             <div class="card-body">
@@ -66,9 +66,7 @@
                                     <div class="mb-2">
                                         <label class="form-label">
                                             Password
-                                            <span class="form-label-description">
-                                                <a href="./forgot-password.html">I forgot password</a>
-                                            </span>
+
                                         </label>
                                         <div class="input-group input-group-flat">
                                             <input type="password" name="password" class="form-control"
@@ -101,9 +99,6 @@
                                 </form>
                             </div>
 
-                        </div>
-                        <div class="text-center text-secondary mt-3">
-                            Don't have account yet? <a href="./sign-up.html" tabindex="-1">Sign up</a>
                         </div>
                     </div>
                 </div>

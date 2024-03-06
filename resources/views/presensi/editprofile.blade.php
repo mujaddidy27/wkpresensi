@@ -31,12 +31,12 @@
             @endif
         </div>
     </div>
-    <form action="/presensi/{{ $karyawan->nik }}/updateprofile" method="POST" enctype="multipart/form-data">
+    <form action="/presensi/{{ $karyawan->nik }}/updateprofile" method="post" enctype="multipart/form-data">
         @csrf
         <div class="col">
             <div class="form-group boxed">
                 <div class="input-wrapper">
-                    <input type="text" class="form-control" value="{{ $karyawan->nama }}" name="nama_lengkap"
+                    <input type="text" class="form-control" value="{{ $karyawan->nama_lengkap }}" name="nama_lengkap"
                         placeholder="Nama Lengkap" autocomplete="off">
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="custom-file-upload" id="fileUpload1">
-                <input type="file" name="foto" id="fileuploadInput" accept=".png, .jpg, .jpeg">
+                <input type="file" name="imgprofile" id="fileuploadInput">
                 <label for="fileuploadInput">
                     <span>
                         <strong>

@@ -31,18 +31,97 @@
         border-radius: 15px;
         margin-bottom: 70px;
     }
+
+    .jam-digital-malasngoding {
+
+        background-color: #27272783;
+        position: absolute;
+        top: 1px;
+        right: 5px;
+        z-index: 9999;
+        width: 150px;
+        border-radius: 10px;
+        padding: 5px;
+    }
+
+
+
+    .jam-digital-malasngoding p {
+        color: #fff;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
 </style>
+<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 @section('content')
-    <div class="row" style="margin-top: 70px">
-        <div class="col">
+    <div class="row" style="margin-top:  70px">
+        <div class="col-12">
+            @php
+                $messegsuccess = Session::get('success');
+                $messegerror = Session::get('error');
+            @endphp
+            @if (Session::get('success'))
+                <div class="alert alert-info">
+                    {{ $messegsuccess }}
+                </div>
+            @endif
+            @if (Session::get('error'))
+                <div class="alert alert-danger">
+                    {{ $messegerror }}
+                </div>
+            @endif
+        </div>
+        <div class="col-12">
             <input type="hidden" id="lokasi">
             <div class="webcam-capture" id="webcam-capture"></div>
+            <div class="jam-digital-malasngoding">
+                <p>{{ date('d-m-Y') }}</p>
+                <p id="jam"></p>
+                <p>{{ $shift_karyawan->nama_shift }}</p>
+                <p>Mulai:{{ date('H:i', strtotime($shift_karyawan->awal_jam_masuk)) }}</p>
+                <p>Masuk:{{ date('H:i', strtotime($shift_karyawan->jam_masuk)) }}</p>
+                <p>Akhir:{{ date('H:i', strtotime($shift_karyawan->akhir_jam_masuk)) }}</p>
+                <p>Pulang:{{ date('H:i', strtotime($shift_karyawan->jam_pulang)) }}</p>
+            </div>
         </div>
     </div>
+
+    <div class="row mt-2">
+        <form action="/presensi/pilihshift" method="post" id="formKaryawan" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+                <div class="col-12">
+                    <select class="form-select" name="kode_shift" id="kode_shift" required
+                        oninvalid="this.setCustomValidity('Pilih Shift Dulu !')" onchange="this.setCustomValidity('')">
+                        <option value="">Pilih Shift</option>
+                        @foreach ($shift as $d)
+                            <option {{ $karyawan->kode_shift == $d->kode_shift ? 'selected' : '' }}
+                                value="{{ $d->kode_shift }}">{{ $d->nama_shift }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <button class="btn btn-success" style="margin-top: 10px">Pilih</button>
+            </div>
+        </form>
+    </div>
+
     <div class="row mt-1">
         <div class="col">
             @if ($cek > 0)
@@ -84,6 +163,29 @@
 @endsection
 
 @push('myscript')
+    <script type="text/javascript">
+        window.onload = function() {
+            jam();
+        }
+
+        function jam() {
+            var e = document.getElementById('jam'),
+                d = new Date(),
+                h, m, s;
+            h = d.getHours();
+            m = set(d.getMinutes());
+            s = set(d.getSeconds());
+
+            e.innerHTML = h + ':' + m + ':' + s;
+
+            setTimeout('jam()', 1000);
+        }
+
+        function set(e) {
+            e = e < 10 ? '0' + e : e;
+            return e;
+        }
+    </script>
     <script>
         var notif_in = document.getElementById('notif_in')
         var notif_out = document.getElementById('notif_out')
@@ -105,14 +207,14 @@
         function successCallback(position) {
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 16);
-            var lok_kantor = "{{ $lokasi_kantor->lokasi_kantor }}";
+            var lok_kantor = "{{ $lokasi_kantor->lokasi_cab }}";
             var lok = lok_kantor.split(",");
             var lat_kantor = lok[0];
             var long_kantor = lok[1];
             var radius = "{{ $lokasi_kantor->radius }}";
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
                 maxZoom: 20,
-                attribution: '© OpenStreetMap'
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
             var circle = L.circle([lat_kantor, long_kantor], {

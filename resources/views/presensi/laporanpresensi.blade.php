@@ -62,7 +62,7 @@
                                 <div class="row mt-2">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <select name="karyawan" id="karyawan" class="form-select">
+                                            <select name="karyawan" id="karyawan" class="form-select" required>
                                                 <option value="">Pilih Karyawan</option>
                                                 @foreach ($karyawan as $d)
                                                     <option value="{{ $d->nik }}">{{ $d->nama_lengkap }}</option>
@@ -95,7 +95,7 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-success w-100">
+                                            <button type="submit" name="exporttoexcel" class="btn btn-success w-100">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     class="icon icon-tabler icon-tabler-file-export" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"

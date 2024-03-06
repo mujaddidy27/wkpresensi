@@ -28,7 +28,7 @@
         </div>
     </a>
 
-    <a href="/editprofile" class="item {{ request()->is('editprofile') ? 'active' : '' }}">
+    <a href="/profile" class="item {{ request()->is('profile') ? 'active' : '' }}">
         <div class="col">
             <ion-icon name="people-outline" role="img" class="md hydrated" aria-label="people outline"></ion-icon>
             <strong>Profile</strong>
